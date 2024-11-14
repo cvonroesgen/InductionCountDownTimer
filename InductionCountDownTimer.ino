@@ -19,6 +19,7 @@ long loopCounter = 0;
 int secondCounter = 0;
 bool buttonPressed = false;  // Variable for reading the button status
 int buttonPressedTimer = 0;
+long buttonPressedResetTimer = 0;
 int buttonPressedMinimumCount = 1000;
 int buttonReleasedTimer = 0;
 int buttonReleasedMinimumCount = 1000;
@@ -61,6 +62,7 @@ void loop() {
   buttonPressed = digitalRead(buttonReadPin);
   if (buttonPressed) {
     buttonPressedTimer++;
+    buttonPressedResetTimer++;
     buttonReleasedTimer = 0;
   } else {
     buttonReleasedTimer++;
@@ -70,6 +72,13 @@ void loop() {
   if ((buttonPressedTimer > buttonPressedMinimumCount) && buttonPressed) {
     buttonHasBeenPressed = true;
     buttonPressedTimer = 0;
+  }
+
+  if ((buttonPressedResetTimer > countsPerSecond * 2) && buttonPressed) {
+    secondCounter = 0;
+    buttonPressedResetTimer = 0;
+    buttonHasBeenPressed = false;
+    displayTime();
   }
 
   if ((buttonReleasedTimer > buttonReleasedMinimumCount) && !buttonPressed) {
