@@ -5,7 +5,7 @@
 const int buttonPowerPin = 2;
 const int buttonReadPin = 3;  // Pin connected to the button
 const int buttonGroundPin = 4;
-
+const int solidStateRelayPin = 13;
 // Define screen dimensions
 #define SCREEN_WIDTH 128
 #define SCREEN_HEIGHT 64
@@ -14,7 +14,7 @@ const int buttonGroundPin = 4;
 #define OLED_RESET -1  // Reset pin (or -1 if sharing Arduino reset pin)
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-long countsPerSecond = 150000;
+long countsPerSecond = 100000;
 long loopCounter = 0;
 int secondCounter = 0;
 bool buttonPressed = false;  // Variable for reading the button status
@@ -22,7 +22,7 @@ int buttonPressedTimer = 0;
 long buttonPressedResetTimer = 0;
 int buttonPressedMinimumCount = 1000;
 int buttonReleasedTimer = 0;
-int buttonReleasedMinimumCount = 1000;
+int buttonReleasedMinimumCount = buttonPressedMinimumCount;
 bool buttonHasBeenPressed = false;
 bool resetJustHappened = false;
 long pauseCounter = 0;
@@ -33,8 +33,10 @@ void setup() {
   Serial.begin(9600);
 
   pinMode(buttonReadPin, INPUT);    // Set the button pin as an input
-  pinMode(buttonPowerPin, OUTPUT);  // Set the button pin as an output
+  pinMode(buttonPowerPin, OUTPUT);
   digitalWrite(buttonPowerPin, HIGH);
+  pinMode(solidStateRelayPin, OUTPUT);  // Set the button pin as an output
+  digitalWrite(solidStateRelayPin, HIGH);
   pinMode(buttonGroundPin, OUTPUT);  // Set the button pin as an output
   digitalWrite(buttonGroundPin, LOW);
   // Initialize the display
@@ -100,6 +102,12 @@ void loop() {
       secondCounter--;
       loopCounter = 0;
       displayTime();
+      if(secondCounter == 0)
+        {
+          digitalWrite(solidStateRelayPin, LOW);
+          delay(3000);
+          digitalWrite(solidStateRelayPin, HIGH);
+        }
     }
   }
 }
