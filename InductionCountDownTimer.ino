@@ -14,7 +14,7 @@ const int solidStateRelayPin = 13;
 #define OLED_RESET -1  // Reset pin (or -1 if sharing Arduino reset pin)
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-long countsPerSecond = 100000;
+long countsPerSecond = 88235;
 long loopCounter = 0;
 int secondCounter = 0;
 bool buttonPressed = false;  // Variable for reading the button status
