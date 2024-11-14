@@ -24,6 +24,7 @@ int buttonPressedMinimumCount = 1000;
 int buttonReleasedTimer = 0;
 int buttonReleasedMinimumCount = 1000;
 bool buttonHasBeenPressed = false;
+bool resetJustHappened = false;
 long pauseCounter = 0;
 char minutesSecondsBuffer[6];
 
@@ -53,8 +54,7 @@ void setup() {
   display.setTextColor(SSD1306_WHITE);  // Set text color to white
 
   // Update the display with the text
-  display.clearDisplay();
-  display.display();
+  displayTime();
 }
 
 void loop() {
@@ -77,13 +77,17 @@ void loop() {
   if ((buttonPressedResetTimer > countsPerSecond * 2) && buttonPressed) {
     secondCounter = 0;
     buttonPressedResetTimer = 0;
-    buttonHasBeenPressed = false;
+    resetJustHappened = true;
     displayTime();
   }
 
   if ((buttonReleasedTimer > buttonReleasedMinimumCount) && !buttonPressed) {
     if (buttonHasBeenPressed) {
-      buttonCycled();
+      if (!resetJustHappened) {
+        buttonCycled();
+      } else {
+        resetJustHappened = false;
+      }
       buttonHasBeenPressed = false;
     }
     buttonReleasedTimer = 0;
