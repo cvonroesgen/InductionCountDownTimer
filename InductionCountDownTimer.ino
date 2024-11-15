@@ -2,9 +2,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-const int buttonPowerPin = 2;
-const int buttonReadPin = 3;  // Pin connected to the button
-const int buttonGroundPin = 4;
+const int buttonPowerPin = 2; //to button non resistor side
+const int buttonReadPin = 3;  // Pin connected to the button and resistor
+const int buttonGroundPin = 4; //To resistor only
 const int solidStateRelayPin = 13;
 // Define screen dimensions
 #define SCREEN_WIDTH 128
@@ -27,6 +27,7 @@ bool buttonHasBeenPressed = false;
 bool resetJustHappened = false;
 long pauseCounter = 0;
 char minutesSecondsBuffer[6];
+const int inductionOffTimeSeconds = 5;
 
 void setup() {
   // Initialize serial communication for debugging
@@ -105,7 +106,7 @@ void loop() {
       if(secondCounter == 0)
         {
           digitalWrite(solidStateRelayPin, LOW);
-          delay(3000);
+          delay(inductionOffTimeSeconds * 1000);
           digitalWrite(solidStateRelayPin, HIGH);
         }
     }
