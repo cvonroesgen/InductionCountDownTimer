@@ -2,9 +2,9 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-const int buttonPowerPin = 2; //to button non resistor side
-const int buttonReadPin = 3;  // Pin connected to the button and resistor
-const int buttonGroundPin = 4; //To resistor only
+const int buttonPowerPin = 2;   //to button non resistor side
+const int buttonReadPin = 3;    // Pin connected to the button and resistor
+const int buttonGroundPin = 4;  //To resistor only
 const int solidStateRelayPin = 13;
 // Define screen dimensions
 #define SCREEN_WIDTH 128
@@ -33,7 +33,7 @@ void setup() {
   // Initialize serial communication for debugging
   Serial.begin(9600);
 
-  pinMode(buttonReadPin, INPUT);    // Set the button pin as an input
+  pinMode(buttonReadPin, INPUT);  // Set the button pin as an input
   pinMode(buttonPowerPin, OUTPUT);
   digitalWrite(buttonPowerPin, HIGH);
   pinMode(solidStateRelayPin, OUTPUT);  // Set the button pin as an output
@@ -100,16 +100,20 @@ void loop() {
   } else {
     pauseCounter = 0;
     loopCounter++;
-    if ((loopCounter > countsPerSecond) && (secondCounter > 0)) {
+
+    if ((secondCounter > 0)) {
       secondCounter--;
+      if (secondCounter == 0) {
+        digitalWrite(solidStateRelayPin, LOW);
+        delay(inductionOffTimeSeconds * 1000);
+        digitalWrite(solidStateRelayPin, HIGH);
+      }
+    }
+
+
+    if (loopCounter > countsPerSecond) {
       loopCounter = 0;
       displayTime();
-      if(secondCounter == 0)
-        {
-          digitalWrite(solidStateRelayPin, LOW);
-          delay(inductionOffTimeSeconds * 1000);
-          digitalWrite(solidStateRelayPin, HIGH);
-        }
     }
   }
 }
