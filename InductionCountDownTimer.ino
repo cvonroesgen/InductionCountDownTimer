@@ -15,7 +15,6 @@ const int solidStateRelayPin = 13;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 const long countsPerSecond = 88235;
-long loopCounter = 0;
 int secondCounter = 0;
 bool buttonPressed = false;  // Variable for reading the button status
 int buttonPressedTimer = 0;
@@ -28,7 +27,8 @@ bool resetJustHappened = false;
 long pauseCounter = 0;
 char minutesSecondsBuffer[6];
 const int inductionOffTimeSeconds = 5;
-
+unsigned long lastMillis = 0;
+unsigned long now = 0;
 void setup() {
   // Initialize serial communication for debugging
   Serial.begin(9600);
@@ -101,10 +101,9 @@ void loop() {
     pauseCounter--;
   } else {
     pauseCounter = 0;
-    loopCounter++;
-
-    if (loopCounter > countsPerSecond) {
-      loopCounter = 0;
+    now = millis();
+    if (now - lastMillis > 1000) {
+      lastMillis = now;
       if ((secondCounter > 0)) {
         secondCounter--;
         displayTime();
@@ -114,7 +113,6 @@ void loop() {
           digitalWrite(solidStateRelayPin, HIGH);
         }
       }
-      
     }
   }
 }
