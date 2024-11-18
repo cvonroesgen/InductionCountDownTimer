@@ -95,25 +95,26 @@ void loop() {
     }
     buttonReleasedTimer = 0;
   }
+
+
   if (pauseCounter > 0) {
     pauseCounter--;
   } else {
     pauseCounter = 0;
     loopCounter++;
 
-    if ((secondCounter > 0)) {
-      secondCounter--;
-      if (secondCounter == 0) {
-        digitalWrite(solidStateRelayPin, LOW);
-        delay(inductionOffTimeSeconds * 1000);
-        digitalWrite(solidStateRelayPin, HIGH);
-      }
-    }
-
-
     if (loopCounter > countsPerSecond) {
       loopCounter = 0;
-      displayTime();
+      if ((secondCounter > 0)) {
+        secondCounter--;
+        displayTime();
+        if (secondCounter == 0) {
+          digitalWrite(solidStateRelayPin, LOW);
+          delay(inductionOffTimeSeconds * 1000);
+          digitalWrite(solidStateRelayPin, HIGH);
+        }
+      }
+      
     }
   }
 }
