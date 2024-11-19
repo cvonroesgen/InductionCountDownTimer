@@ -15,7 +15,7 @@ const int solidStateRelayPin = 13;
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 const long countsPerSecond = 88235;
-int secondCounter = 0;
+unsigned int secondCounter = 0;
 bool buttonPressed = false;  // Variable for reading the button status
 int buttonPressedTimer = 0;
 long buttonPressedResetTimer = 0;
