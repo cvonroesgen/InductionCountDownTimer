@@ -102,7 +102,7 @@ void loop() {
   } else {
     pauseCounter = 0;
     now = millis();
-    if (now - lastMillis > 1000) {
+    if (now - lastMillis >= 1000) {
       lastMillis = now;
       if ((secondCounter > 0)) {
         secondCounter--;
