@@ -70,6 +70,7 @@ void loop() {
   } else {
     buttonReleasedTimer++;
     buttonPressedTimer = 0;
+    buttonPressedResetTimer = 0;
   }
 
   if ((buttonPressedTimer > buttonPressedMinimumCount) && buttonPressed) {
