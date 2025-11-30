@@ -57,7 +57,6 @@ void setup() {
   display.setTextColor(SSD1306_WHITE);  // Set text color to white
 
   // Update the display with the text
-  displayTime();
   display.ssd1306_command(SSD1306_DISPLAYOFF);
 }
 
@@ -83,7 +82,6 @@ void loop() {
     secondCounter = 0;
     buttonPressedResetTimer = 0;
     resetJustHappened = true;
-    displayTime();
     display.ssd1306_command(SSD1306_DISPLAYOFF);
   }
 
@@ -109,7 +107,6 @@ void loop() {
       lastMillis = now;
       if ((secondCounter > 0)) {
         secondCounter--;
-        display.ssd1306_command(SSD1306_DISPLAYON);
         displayTime();
         if (secondCounter == 0) {
           digitalWrite(solidStateRelayPin, LOW);
@@ -133,6 +130,7 @@ void buttonCycled() {
 }
 
 void displayTime() {
+  display.ssd1306_command(SSD1306_DISPLAYON);
   display.clearDisplay();
   //debug();
   display.setCursor(0, 20);
