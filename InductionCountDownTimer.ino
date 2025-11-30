@@ -58,6 +58,7 @@ void setup() {
 
   // Update the display with the text
   displayTime();
+  display.ssd1306_command(SSD1306_DISPLAYOFF);
 }
 
 void loop() {
@@ -83,6 +84,7 @@ void loop() {
     buttonPressedResetTimer = 0;
     resetJustHappened = true;
     displayTime();
+    display.ssd1306_command(SSD1306_DISPLAYOFF);
   }
 
   if ((buttonReleasedTimer > buttonReleasedMinimumCount) && !buttonPressed) {
@@ -107,11 +109,13 @@ void loop() {
       lastMillis = now;
       if ((secondCounter > 0)) {
         secondCounter--;
+        display.ssd1306_command(SSD1306_DISPLAYON);
         displayTime();
         if (secondCounter == 0) {
           digitalWrite(solidStateRelayPin, LOW);
           delay(inductionOffTimeSeconds * 1000);
           digitalWrite(solidStateRelayPin, HIGH);
+          display.ssd1306_command(SSD1306_DISPLAYOFF);
         }
       }
     }
